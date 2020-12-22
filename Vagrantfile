@@ -15,12 +15,16 @@ Vagrant.configure("2") do |config|
       node.vm.box = "centos/7"
       node.vm.hostname = "node#{i}"
       ip = "172.17.8.#{i+100}"
+      ssh_old_port = "#{i+2221}"
+      ssh_port_new = "#{i+3321}"
+      node.vm.network "forwarded_port", guest: 22, host: ssh_old_port, id: "ssh", disabled: "true"
+      node.vm.network "forwarded_port", guest: 22, host: ssh_port_new, host_ip: "127.0.0.1"
       node.vm.network "private_network", ip: ip
       node.vm.provider "virtualbox" do |vb|
         vb.memory = "3072"
         vb.cpus = 1
         vb.name = "node#{i}"
-      end
+      end      
       node.vm.provision "shell", path: "install.sh", args: [i, ip, $etcd_cluster]
     end
   end
