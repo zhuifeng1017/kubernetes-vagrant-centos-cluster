@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
    vb.customize [ "guestproperty", "set", :id, "/VirtualBox/GuestAdd/VBoxService/--timesync-set-threshold", 1000 ]
   end  
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
-  $num_instances = 3
+  $num_instances = 1
   # curl https://discovery.etcd.io/new?size=3
   $etcd_cluster = "node1=http://172.17.8.101:2380"
   (1..$num_instances).each do |i|
